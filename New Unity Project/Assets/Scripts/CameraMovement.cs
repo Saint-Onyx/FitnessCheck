@@ -4,12 +4,10 @@ using UnityEngine;
 
 public class CameraMovement : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
-
+    private float minZoom = 25f;
+    private float maxZoom = 60f;
+    private float currentZoom;
+    private float sensitivity = 50f;
     // Update is called once per frame
     void Update()
     {
@@ -21,6 +19,11 @@ public class CameraMovement : MonoBehaviour
         {
             transform.Rotate(0, -100 * Time.deltaTime, 0);
         }
+
+        currentZoom = Camera.main.fieldOfView;
+        currentZoom -= Input.GetAxis("Mouse ScrollWheel") * sensitivity;
+        currentZoom = Mathf.Clamp(currentZoom, minZoom, maxZoom);
+        Camera.main.fieldOfView = currentZoom;
 
     }
 }
