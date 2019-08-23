@@ -1,0 +1,29 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0c4834e6077abe64e968f9f87c9ac70a, type: 3}
+  m_Name: M_Athletic_Body_Overlay
+  m_EditorClassIdentifier: 
+  overlayName: M_Athletic_Body_Overlay
+  overlayType: 0
+  rect:
+    x: 0
+    y: 0
+    width: 0
+    height: 0
+  alphaMask: {fileID: 0}
+  textureList:
+  - {fileID: 2800000, guid: bd4622fdd81a510438cf79427928b51d, type: 3}
+  - {fileID: 2800000, guid: c38f7c83083e46b48b2fefe7cdb35bd5, type: 3}
+  - {fileID: 2800000, guid: 449cd5ea58dc5fa45a2461f24cbb9bb7, type: 3}
+  tags: []
+  material: {fileID: 11400000, guid: 1b7cf5d4ead0a0248ac1188a27506040, type: 2}
+  OcclusionEntries: []
