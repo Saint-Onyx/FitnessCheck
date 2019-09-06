@@ -9,19 +9,20 @@ using System.Xml;
 public class AnimationSerializer : MonoBehaviour
 {
     private static readonly string animationDirectoryName = "AnimationRecordings";
-    private static readonly string animationFileName = "Animation " + DateTime.Now.ToString("dd MMMM HH:mm") + ".xml";
-    private static readonly string directoryPath = Environment.GetFolderPath(System.Environment.SpecialFolder.MyDocuments);
+    private static readonly string animationFileName = "Animation.xml";
+    private static readonly string directoryPath = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
     public static readonly string animationRelativeFilePath = Path.Combine(animationDirectoryName, animationFileName);
     public static readonly string animationDirectoryPath = Path.Combine(directoryPath, animationDirectoryName);
     public static readonly string animationFilePath = Path.Combine(directoryPath, animationRelativeFilePath);
 
     public bool isRecording = false;
 
-    public Transform head;
-    public Transform elbow_r;
+    public Transform neck;
+    public Transform shoulder_r;
     public Transform hand_r;
     public Transform elbow_l;
     public Transform hand_l;
+    public Transform spine;
     public Transform pelvis;
     public Transform knee_r;
     public Transform foot_r;
@@ -52,6 +53,7 @@ public class AnimationSerializer : MonoBehaviour
             nodeList.Clear();
             CheckForPath();
             SerializeWorkoutAnimation();
+            Debug.Log("Finished Serializing Movement Parameters.");
 
         }
     }
@@ -67,16 +69,18 @@ public class AnimationSerializer : MonoBehaviour
     {
         WorkoutAnimationNode node = new WorkoutAnimationNode()
         {
-            headposition = new SerializableVector3(head.position.x, head.position.y, head.position.z),
-            headrotation = new SerializableQuaternion(head.rotation.x, head.rotation.y, head.rotation.z, head.rotation.w),
-            elbowposition_r = new SerializableVector3(elbow_r.position.x, elbow_r.position.y, elbow_r.position.z),
-            elbowrotation_r = new SerializableQuaternion(elbow_r.rotation.x, elbow_r.rotation.y, elbow_r.rotation.z, elbow_r.rotation.w),
+            headposition = new SerializableVector3(neck.position.x, neck.position.y, neck.position.z),
+            headrotation = new SerializableQuaternion(neck.rotation.x, neck.rotation.y, neck.rotation.z, neck.rotation.w),
+            elbowposition_r = new SerializableVector3(shoulder_r.position.x, shoulder_r.position.y, shoulder_r.position.z),
+            elbowrotation_r = new SerializableQuaternion(shoulder_r.rotation.x, shoulder_r.rotation.y, shoulder_r.rotation.z, shoulder_r.rotation.w),
             handposition_r = new SerializableVector3(hand_r.position.x, hand_r.position.y, hand_r.position.z),
             handrotation_r = new SerializableQuaternion(hand_r.rotation.x, hand_r.rotation.y, hand_r.rotation.z, hand_r.rotation.w),
             elbowposition_l = new SerializableVector3(elbow_l.position.x, elbow_l.position.y, elbow_l.position.z),
             elbowrotation_l = new SerializableQuaternion(elbow_l.rotation.x, elbow_l.rotation.y, elbow_l.rotation.z, elbow_l.rotation.w),
             handposition_l = new SerializableVector3(hand_l.position.x, hand_l.position.y, hand_l.position.z),
             handrotation_l = new SerializableQuaternion(hand_l.rotation.x, hand_l.rotation.y, hand_l.rotation.z, hand_l.rotation.w),
+            spineposition = new SerializableVector3(spine.position.x, spine.position.y, spine.position.z),
+            spinerotation = new SerializableQuaternion(spine.rotation.x, spine.rotation.y, spine.rotation.z, spine.rotation.w),
             pelvisposition = new SerializableVector3(pelvis.position.x, pelvis.position.y, pelvis.position.z),
             pelvisrotation = new SerializableQuaternion(pelvis.rotation.x, pelvis.rotation.y, pelvis.rotation.z, pelvis.rotation.w),
             kneeposition_r = new SerializableVector3(knee_r.position.x, knee_r.position.y, knee_r.position.z),
@@ -88,7 +92,6 @@ public class AnimationSerializer : MonoBehaviour
             footposition_l = new SerializableVector3(foot_l.position.x, foot_l.position.y, foot_l.position.z),
             footrotation_l = new SerializableQuaternion(foot_l.rotation.x, foot_l.rotation.y, foot_l.rotation.z, foot_l.rotation.w)
         };
-        Debug.Log(node);
         nodeList.Add(node);
     }
 
@@ -173,6 +176,12 @@ public class WorkoutAnimationNode
 
     [XmlElement("Handrotation_Left")]
     public SerializableQuaternion handrotation_l { get; set; }
+
+    [XmlElement("Spineposition")]
+    public SerializableVector3 spineposition { get; set; }
+
+    [XmlElement("Spinerotation")]
+    public SerializableQuaternion spinerotation { get; set; }
 
     [XmlElement("Pelvisposition")]
     public SerializableVector3 pelvisposition { get; set; }

@@ -32,6 +32,8 @@ namespace Valve.VR
             Device15
         }
 
+        public bool trackPos = false;
+
         public EIndex index;
 
         [Tooltip("If not set, relative to parent")]
@@ -62,7 +64,11 @@ namespace Valve.VR
 
             if (origin != null)
             {
-                transform.position = origin.transform.TransformPoint(pose.pos);
+                if (trackPos)
+                {
+                    transform.position = origin.transform.TransformPoint(pose.pos);
+                }
+                
                 transform.rotation = origin.rotation * pose.rot;
             }
             else
