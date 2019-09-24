@@ -17,19 +17,19 @@ public class AnimationSerializer : MonoBehaviour
 
     public bool isRecording = false;
 
-    public Transform neck;
-    public Transform shoulder_r;
-    public Transform hand_r;
+    public Transform head;
     public Transform elbow_l;
     public Transform hand_l;
-    public Transform spine;
+    public Transform elbow_r;
+    public Transform hand_r;
     public Transform pelvis;
-    public Transform knee_r;
-    public Transform foot_r;
     public Transform knee_l;
     public Transform foot_l;
+    public Transform knee_r;
+    public Transform foot_r;
 
     private List<WorkoutAnimationNode> nodeList = new List<WorkoutAnimationNode>();
+    [HideInInspector]
     public WorkoutAnimation workout;
 
 
@@ -69,28 +69,26 @@ public class AnimationSerializer : MonoBehaviour
     {
         WorkoutAnimationNode node = new WorkoutAnimationNode()
         {
-            headposition = new SerializableVector3(neck.position.x, neck.position.y, neck.position.z),
-            headrotation = new SerializableQuaternion(neck.rotation.x, neck.rotation.y, neck.rotation.z, neck.rotation.w),
-            elbowposition_r = new SerializableVector3(shoulder_r.position.x, shoulder_r.position.y, shoulder_r.position.z),
-            elbowrotation_r = new SerializableQuaternion(shoulder_r.rotation.x, shoulder_r.rotation.y, shoulder_r.rotation.z, shoulder_r.rotation.w),
-            handposition_r = new SerializableVector3(hand_r.position.x, hand_r.position.y, hand_r.position.z),
-            handrotation_r = new SerializableQuaternion(hand_r.rotation.x, hand_r.rotation.y, hand_r.rotation.z, hand_r.rotation.w),
-            elbowposition_l = new SerializableVector3(elbow_l.position.x, elbow_l.position.y, elbow_l.position.z),
-            elbowrotation_l = new SerializableQuaternion(elbow_l.rotation.x, elbow_l.rotation.y, elbow_l.rotation.z, elbow_l.rotation.w),
-            handposition_l = new SerializableVector3(hand_l.position.x, hand_l.position.y, hand_l.position.z),
-            handrotation_l = new SerializableQuaternion(hand_l.rotation.x, hand_l.rotation.y, hand_l.rotation.z, hand_l.rotation.w),
-            spineposition = new SerializableVector3(spine.position.x, spine.position.y, spine.position.z),
-            spinerotation = new SerializableQuaternion(spine.rotation.x, spine.rotation.y, spine.rotation.z, spine.rotation.w),
-            pelvisposition = new SerializableVector3(pelvis.position.x, pelvis.position.y, pelvis.position.z),
-            pelvisrotation = new SerializableQuaternion(pelvis.rotation.x, pelvis.rotation.y, pelvis.rotation.z, pelvis.rotation.w),
-            kneeposition_r = new SerializableVector3(knee_r.position.x, knee_r.position.y, knee_r.position.z),
-            kneerotation_r = new SerializableQuaternion(knee_r.rotation.x, knee_r.rotation.y, knee_r.rotation.z, knee_r.rotation.w),
-            footposition_r = new SerializableVector3(foot_r.position.x, foot_r.position.y, foot_r.position.z),
-            footrotation_r = new SerializableQuaternion(foot_r.rotation.x, foot_r.rotation.y, foot_r.rotation.z, foot_r.rotation.w),
-            kneeposition_l = new SerializableVector3(knee_l.position.x, knee_l.position.y, knee_l.position.z),
-            kneerotation_l = new SerializableQuaternion(knee_l.rotation.x, knee_l.rotation.y, knee_l.rotation.z, knee_l.rotation.w),
-            footposition_l = new SerializableVector3(foot_l.position.x, foot_l.position.y, foot_l.position.z),
-            footrotation_l = new SerializableQuaternion(foot_l.rotation.x, foot_l.rotation.y, foot_l.rotation.z, foot_l.rotation.w)
+            headposition = new SerializableVector3(head.localPosition.x, head.localPosition.y, head.localPosition.z),
+            headrotation = new SerializableQuaternion(head.localRotation.x, head.localRotation.y, head.localRotation.z, head.localRotation.w),
+            elbowposition_l = new SerializableVector3(elbow_l.localPosition.x, elbow_l.localPosition.y, elbow_l.localPosition.z),
+            elbowrotation_l = new SerializableQuaternion(elbow_l.localRotation.x, elbow_l.localRotation.y, elbow_l.localRotation.z, elbow_l.localRotation.w),
+            handposition_l = new SerializableVector3(hand_l.localPosition.x, hand_l.localPosition.y, hand_l.localPosition.z),
+            handrotation_l = new SerializableQuaternion(hand_l.localRotation.x, hand_l.localRotation.y, hand_l.localRotation.z, hand_l.localRotation.w),
+            elbowposition_r = new SerializableVector3(elbow_l.localPosition.x, elbow_l.localPosition.y, elbow_l.localPosition.z),
+            elbowrotation_r = new SerializableQuaternion(elbow_l.localRotation.x, elbow_l.localRotation.y, elbow_l.localRotation.z, elbow_l.localRotation.w),
+            handposition_r = new SerializableVector3(hand_l.localPosition.x, hand_l.localPosition.y, hand_l.localPosition.z),
+            handrotation_r = new SerializableQuaternion(hand_l.localRotation.x, hand_l.localRotation.y, hand_l.localRotation.z, hand_l.localRotation.w),
+            pelvisposition = new SerializableVector3(pelvis.localPosition.x, pelvis.localPosition.y, pelvis.localPosition.z),
+            pelvisrotation = new SerializableQuaternion(pelvis.localRotation.x, pelvis.localRotation.y, pelvis.localRotation.z, pelvis.localRotation.w),
+            kneeposition_l = new SerializableVector3(knee_l.localPosition.x, knee_l.localPosition.y, knee_l.localPosition.z),
+            kneerotation_l = new SerializableQuaternion(knee_l.localRotation.x, knee_l.localRotation.y, knee_l.localRotation.z, knee_l.localRotation.w),
+            footposition_l = new SerializableVector3(foot_l.localPosition.x, foot_l.localPosition.y, foot_l.localPosition.z),
+            footrotation_l = new SerializableQuaternion(foot_l.localRotation.x, foot_l.localRotation.y, foot_l.localRotation.z, foot_l.localRotation.w),
+            kneeposition_r = new SerializableVector3(knee_r.localPosition.x, knee_r.localPosition.y, knee_r.localPosition.z),
+            kneerotation_r = new SerializableQuaternion(knee_r.localRotation.x, knee_r.localRotation.y, knee_r.localRotation.z, knee_r.localRotation.w),
+            footposition_r = new SerializableVector3(foot_r.localPosition.x, foot_r.localPosition.y, foot_r.localPosition.z),
+            footrotation_r = new SerializableQuaternion(foot_r.localRotation.x, foot_r.localRotation.y, foot_r.localRotation.z, foot_r.localRotation.w)
         };
         nodeList.Add(node);
     }
@@ -153,18 +151,6 @@ public class WorkoutAnimationNode
     [XmlElement("Headrotation")]
     public SerializableQuaternion headrotation { get; set; }
 
-    [XmlElement("Elbowposition_Right")]
-    public SerializableVector3 elbowposition_r { get; set; }
-
-    [XmlElement("Elbowrotation_Right")]
-    public SerializableQuaternion elbowrotation_r { get; set; }
-
-    [XmlElement("Handposition_Right")]
-    public SerializableVector3 handposition_r { get; set; }
-
-    [XmlElement("Handrotation_Right")]
-    public SerializableQuaternion handrotation_r { get; set; }
-
     [XmlElement("Elbowposition_Left")]
     public SerializableVector3 elbowposition_l { get; set; }
 
@@ -177,29 +163,23 @@ public class WorkoutAnimationNode
     [XmlElement("Handrotation_Left")]
     public SerializableQuaternion handrotation_l { get; set; }
 
-    [XmlElement("Spineposition")]
-    public SerializableVector3 spineposition { get; set; }
+    [XmlElement("Elbowposition_Right")]
+    public SerializableVector3 elbowposition_r { get; set; }
 
-    [XmlElement("Spinerotation")]
-    public SerializableQuaternion spinerotation { get; set; }
+    [XmlElement("Elbowrotation_Right")]
+    public SerializableQuaternion elbowrotation_r { get; set; }
+
+    [XmlElement("Handposition_Right")]
+    public SerializableVector3 handposition_r { get; set; }
+
+    [XmlElement("Handrotation_Right")]
+    public SerializableQuaternion handrotation_r { get; set; }
 
     [XmlElement("Pelvisposition")]
     public SerializableVector3 pelvisposition { get; set; }
 
     [XmlElement("Pelvisrotation")]
     public SerializableQuaternion pelvisrotation { get; set; }
-
-    [XmlElement("Kneeposition_Right")]
-    public SerializableVector3 kneeposition_r { get; set; }
-
-    [XmlElement("Kneerotation_Right")]
-    public SerializableQuaternion kneerotation_r { get; set; }
-
-    [XmlElement("Footposition_Right")]
-    public SerializableVector3 footposition_r { get; set; }
-
-    [XmlElement("Footrotation_Right")]
-    public SerializableQuaternion footrotation_r { get; set; }
 
     [XmlElement("Kneeposition_Left")]
     public SerializableVector3 kneeposition_l { get; set; }
@@ -212,6 +192,18 @@ public class WorkoutAnimationNode
 
     [XmlElement("Footrotation_Left")]
     public SerializableQuaternion footrotation_l { get; set; }
+
+    [XmlElement("Kneeposition_Right")]
+    public SerializableVector3 kneeposition_r { get; set; }
+
+    [XmlElement("Kneerotation_Right")]
+    public SerializableQuaternion kneerotation_r { get; set; }
+
+    [XmlElement("Footposition_Right")]
+    public SerializableVector3 footposition_r { get; set; }
+
+    [XmlElement("Footrotation_Right")]
+    public SerializableQuaternion footrotation_r { get; set; }
 
 }
 
