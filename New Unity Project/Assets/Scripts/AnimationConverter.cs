@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEditor;
 using System.Xml;
+using System.Globalization;
 using System;
 
 
@@ -23,8 +24,8 @@ public class AnimationConverter : EditorWindow
     private List<Quaternion> rightElbowRotation;
     private List<Vector3> rightArmPosition;
     private List<Quaternion> rightArmRotation;
-    private List<Vector3> hipPosition;
-    private List<Quaternion> hipRotation;
+    private List<Vector3> pelvisPosition;
+    private List<Quaternion> pelvisRotation;
     private List<Vector3> leftKneePosition;
     private List<Quaternion> leftKneeRotation;
     private List<Vector3> leftLegPosition;
@@ -66,26 +67,19 @@ public class AnimationConverter : EditorWindow
         }       
     }
 
-    /////////////////////////////////////////////
- 
-    //TODO Floating points not converting properly.
-
-    //Need to find a fix!  
-
-    //ASAP!!!!
-
-    /////////////////////////////////////////////
-
-
     void ExtractXMLData()
     {
         XmlDocument xmlDoc = new XmlDocument();
         xmlDoc.LoadXml(textAsset.text);
-        Debug.Log(xmlDoc.Name);
+        Debug.Log(textAsset.name);
         XmlNodeList xmlHeadPosition = xmlDoc.GetElementsByTagName("Headposition");
         XmlNodeList xmlHeadRotation = xmlDoc.GetElementsByTagName("Headrotation");
         XmlNodeList xmlLeftArmPosition = xmlDoc.GetElementsByTagName("Handposition_Left");
+        XmlNodeList xmlLeftArmRotation = xmlDoc.GetElementsByTagName("Handrotation_Left");
         XmlNodeList xmlRightArmPosition = xmlDoc.GetElementsByTagName("Handposition_Right");
+        XmlNodeList xmlRightArmRotation = xmlDoc.GetElementsByTagName("Handrotation_Right");
+        XmlNodeList xmlPelvisPosition = xmlDoc.GetElementsByTagName("Pelvisposition");
+        XmlNodeList xmlPelvisRotation = xmlDoc.GetElementsByTagName("Pelvisrotation");
 
         Debug.Log(xmlHeadPosition.Count);
         Debug.Log(xmlLeftArmPosition.Count);
@@ -102,22 +96,21 @@ public class AnimationConverter : EditorWindow
             {
                 if (detail.Name == "X")
                 {
-                    float.TryParse(detail.InnerText, out position.x);
+                    float.TryParse(detail.InnerText, NumberStyles.Float, CultureInfo.InvariantCulture, out position.x);
                 }
 
                 if (detail.Name == "Y")
                 {
-                    float.TryParse(detail.InnerText, out position.y);
+                    float.TryParse(detail.InnerText, NumberStyles.Float, CultureInfo.InvariantCulture, out position.y);
                 }
 
                 if (detail.Name == "Z")
                 {
-                    float.TryParse(detail.InnerText, out position.z);
+                    float.TryParse(detail.InnerText, NumberStyles.Float, CultureInfo.InvariantCulture, out position.z);
                 }
             }
             headPosition.Add(position);
         }
-        Debug.Log(headPosition.Count);
 
         foreach (XmlNode rotationInfo in xmlHeadRotation)
         {
@@ -128,22 +121,22 @@ public class AnimationConverter : EditorWindow
             {
                 if (detail.Name == "X")
                 {
-                    float.TryParse(detail.InnerText, out rotation.x);
+                    float.TryParse(detail.InnerText, NumberStyles.Float, CultureInfo.InvariantCulture, out rotation.x);
                 }
 
                 if (detail.Name == "Y")
                 {
-                    float.TryParse(detail.InnerText, out rotation.y);
+                    float.TryParse(detail.InnerText, NumberStyles.Float, CultureInfo.InvariantCulture, out rotation.y);
                 }
 
                 if (detail.Name == "Z")
                 {
-                    float.TryParse(detail.InnerText, out rotation.z);
+                    float.TryParse(detail.InnerText, NumberStyles.Float, CultureInfo.InvariantCulture, out rotation.z);
                 }
 
                 if (detail.Name == "W")
                 {
-                    float.TryParse(detail.InnerText, out rotation.w);
+                    float.TryParse(detail.InnerText, NumberStyles.Float, CultureInfo.InvariantCulture, out rotation.w);
                 }
             }
             headRotation.Add(rotation);
@@ -158,22 +151,51 @@ public class AnimationConverter : EditorWindow
             {
                 if (detail.Name == "X")
                 {
-                    float.TryParse(detail.InnerText, out position.x);
+                    float.TryParse(detail.InnerText, NumberStyles.Float, CultureInfo.InvariantCulture, out position.x);
                 }
 
                 if (detail.Name == "Y")
                 {
-                    float.TryParse(detail.InnerText, out position.y);
+                    float.TryParse(detail.InnerText, NumberStyles.Float, CultureInfo.InvariantCulture, out position.y);
                 }
 
                 if (detail.Name == "Z")
                 {
-                    float.TryParse(detail.InnerText, out position.z);
+                    float.TryParse(detail.InnerText, NumberStyles.Float, CultureInfo.InvariantCulture, out position.z);
                 }
             }
             leftArmPosition.Add(position);
         }
-        Debug.Log(leftArmPosition.Count);
+
+        foreach (XmlNode rotationInfo in xmlLeftArmRotation)
+        {
+            Quaternion rotation = new Quaternion();
+            XmlNodeList rotationDetails = rotationInfo.ChildNodes;
+
+            foreach (XmlNode detail in rotationDetails)
+            {
+                if (detail.Name == "X")
+                {
+                    float.TryParse(detail.InnerText, NumberStyles.Float, CultureInfo.InvariantCulture, out rotation.x);
+                }
+
+                if (detail.Name == "Y")
+                {
+                    float.TryParse(detail.InnerText, NumberStyles.Float, CultureInfo.InvariantCulture, out rotation.y);
+                }
+
+                if (detail.Name == "Z")
+                {
+                    float.TryParse(detail.InnerText, NumberStyles.Float, CultureInfo.InvariantCulture, out rotation.z);
+                }
+
+                if (detail.Name == "W")
+                {
+                    float.TryParse(detail.InnerText, NumberStyles.Float, CultureInfo.InvariantCulture, out rotation.w);
+                }
+            }
+            leftArmRotation.Add(rotation);
+        }
 
         foreach (XmlNode positionInfo in xmlRightArmPosition)
         {
@@ -184,22 +206,106 @@ public class AnimationConverter : EditorWindow
             {
                 if (detail.Name == "X")
                 {
-                    float.TryParse(detail.InnerText, out position.x);
+                    float.TryParse(detail.InnerText, NumberStyles.Float, CultureInfo.InvariantCulture, out position.x);
                 }
 
                 if (detail.Name == "Y")
                 {
-                    float.TryParse(detail.InnerText, out position.y);
+                    float.TryParse(detail.InnerText, NumberStyles.Float, CultureInfo.InvariantCulture, out position.y);
                 }
 
                 if (detail.Name == "Z")
                 {
-                    float.TryParse(detail.InnerText, out position.z);
+                    float.TryParse(detail.InnerText, NumberStyles.Float, CultureInfo.InvariantCulture, out position.z);
                 }
             }
             rightArmPosition.Add(position);
         }
 
+        foreach (XmlNode rotationInfo in xmlRightArmRotation)
+        {
+            Quaternion rotation = new Quaternion();
+            XmlNodeList rotationDetails = rotationInfo.ChildNodes;
+
+            foreach (XmlNode detail in rotationDetails)
+            {
+                if (detail.Name == "X")
+                {
+                    float.TryParse(detail.InnerText, NumberStyles.Float, CultureInfo.InvariantCulture, out rotation.x);
+                }
+
+                if (detail.Name == "Y")
+                {
+                    float.TryParse(detail.InnerText, NumberStyles.Float, CultureInfo.InvariantCulture, out rotation.y);
+                }
+
+                if (detail.Name == "Z")
+                {
+                    float.TryParse(detail.InnerText, NumberStyles.Float, CultureInfo.InvariantCulture, out rotation.z);
+                }
+
+                if (detail.Name == "W")
+                {
+                    float.TryParse(detail.InnerText, NumberStyles.Float, CultureInfo.InvariantCulture, out rotation.w);
+                }
+            }
+            rightArmRotation.Add(rotation);
+        }
+
+        foreach (XmlNode positionInfo in xmlPelvisPosition)
+        {
+            Vector3 position = new Vector3();
+            XmlNodeList positionDetails = positionInfo.ChildNodes;
+
+            foreach (XmlNode detail in positionDetails)
+            {
+                if (detail.Name == "X")
+                {
+                    float.TryParse(detail.InnerText, NumberStyles.Float, CultureInfo.InvariantCulture, out position.x);
+                }
+
+                if (detail.Name == "Y")
+                {
+                    float.TryParse(detail.InnerText, NumberStyles.Float, CultureInfo.InvariantCulture, out position.y);
+                }
+
+                if (detail.Name == "Z")
+                {
+                    float.TryParse(detail.InnerText, NumberStyles.Float, CultureInfo.InvariantCulture, out position.z);
+                }
+            }
+            pelvisPosition.Add(position);
+        }
+
+        foreach (XmlNode rotationInfo in xmlPelvisRotation)
+        {
+            Quaternion rotation = new Quaternion();
+            XmlNodeList rotationDetails = rotationInfo.ChildNodes;
+
+            foreach (XmlNode detail in rotationDetails)
+            {
+                if (detail.Name == "X")
+                {
+                    float.TryParse(detail.InnerText, NumberStyles.Float, CultureInfo.InvariantCulture, out rotation.x);
+                }
+
+                if (detail.Name == "Y")
+                {
+                    float.TryParse(detail.InnerText, NumberStyles.Float, CultureInfo.InvariantCulture, out rotation.y);
+                }
+
+                if (detail.Name == "Z")
+                {
+                    float.TryParse(detail.InnerText, NumberStyles.Float, CultureInfo.InvariantCulture, out rotation.z);
+                }
+
+                if (detail.Name == "W")
+                {
+                    float.TryParse(detail.InnerText, NumberStyles.Float, CultureInfo.InvariantCulture, out rotation.w);
+                }
+            }
+            pelvisRotation.Add(rotation);
+        }
     }
 
     void ConvertData()
@@ -222,20 +328,20 @@ public class AnimationConverter : EditorWindow
         Keyframe[] key_headRotation_Z = new Keyframe[headPosition.Count];
         Keyframe[] key_headRotation_W = new Keyframe[headPosition.Count];
 
-        Keyframe[] key_leftHandPosition_X = new Keyframe[leftArmPosition.Count];
+        Keyframe[] key_leftHandPosition_X = new Keyframe[headPosition.Count];
         Keyframe[] key_leftHandPosition_Y = new Keyframe[headPosition.Count];
         Keyframe[] key_leftHandPosition_Z = new Keyframe[headPosition.Count];
 
-        //Keyframe[] key_rightHandPosition_X = new Keyframe[headPosition.Count];
-        //Keyframe[] key_rightHandPosition_Y = new Keyframe[headPosition.Count];
-        //Keyframe[] key_rightHandPosition_Z = new Keyframe[headPosition.Count];
+        Keyframe[] key_rightHandPosition_X = new Keyframe[headPosition.Count];
+        Keyframe[] key_rightHandPosition_Y = new Keyframe[headPosition.Count];
+        Keyframe[] key_rightHandPosition_Z = new Keyframe[headPosition.Count];
 
 
-        for (int i = 0; i < key_leftHandPosition_X.Length; i++)
+        for (int i = 0; i < key_headPosition_X.Length; i++)
         {
-            //key_headPosition_X[i] = new Keyframe(timeline, headPosition[i].x);
-            //key_headPosition_Y[i] = new Keyframe(timeline, headPosition[i].y);
-            //key_headPosition_Z[i] = new Keyframe(timeline, headPosition[i].z);
+            key_headPosition_X[i] = new Keyframe(timeline, headPosition[i].x);
+            key_headPosition_Y[i] = new Keyframe(timeline, headPosition[i].y);
+            key_headPosition_Z[i] = new Keyframe(timeline, headPosition[i].z);
 
             key_headRotation_X[i] = new Keyframe(timeline, headRotation[i].x);
             key_headRotation_Y[i] = new Keyframe(timeline, headRotation[i].y);
@@ -246,29 +352,29 @@ public class AnimationConverter : EditorWindow
             key_leftHandPosition_Y[i] = new Keyframe(timeline, leftArmPosition[i].y);
             key_leftHandPosition_Z[i] = new Keyframe(timeline, leftArmPosition[i].z);
 
-            //key_rightHandPosition_X[i] = new Keyframe(timeline, rightArmPosition[i].x);
-            //key_rightHandPosition_Y[i] = new Keyframe(timeline, rightArmPosition[i].y);
-            //key_rightHandPosition_Z[i] = new Keyframe(timeline, rightArmPosition[i].z);
+            key_rightHandPosition_X[i] = new Keyframe(timeline, rightArmPosition[i].x);
+            key_rightHandPosition_Y[i] = new Keyframe(timeline, rightArmPosition[i].y);
+            key_rightHandPosition_Z[i] = new Keyframe(timeline, rightArmPosition[i].z);
 
 
             timeline += 0.1f;
         }
 
-        //curve = new AnimationCurve(key_headPosition_X);
-        //clip.SetCurve("Head Target Parent", typeof(Transform), "localPosition.x", curve);
-        //curve = new AnimationCurve(key_headPosition_Y);
-        //clip.SetCurve("Head Target Parent", typeof(Transform), "localPosition.y", curve);
-        //curve = new AnimationCurve(key_headPosition_Z);
-        //clip.SetCurve("Head Target Parent", typeof(Transform), "localPosition.z", curve);
+        curve = new AnimationCurve(key_headPosition_X);
+        clip.SetCurve("Head Target Parent", typeof(Transform), "localPosition.x", curve);
+        curve = new AnimationCurve(key_headPosition_Y);
+        clip.SetCurve("Head Target Parent", typeof(Transform), "localPosition.y", curve);
+        curve = new AnimationCurve(key_headPosition_Z);
+        clip.SetCurve("Head Target Parent", typeof(Transform), "localPosition.z", curve);
 
-        //curve = new AnimationCurve(key_headRotation_X);
-        //clip.SetCurve("Head Target Parent", typeof(Animation), "rotation.x", curve);
-        //curve = new AnimationCurve(key_headRotation_Y);
-        //clip.SetCurve("Head Target Parent", typeof(Transform), "rotation.y", curve);
-        //curve = new AnimationCurve(key_headRotation_Z);
-        //clip.SetCurve("Head Target Parent", typeof(Transform), "rotation.z", curve);
-        //curve = new AnimationCurve(key_headRotation_W);
-        //clip.SetCurve("Head Target Parent", typeof(Transform), "rotation.w", curve);
+        curve = new AnimationCurve(key_headRotation_X);
+        clip.SetCurve("Head Target Parent", typeof(Transform), "rotation.x", curve);
+        curve = new AnimationCurve(key_headRotation_Y);
+        clip.SetCurve("Head Target Parent", typeof(Transform), "rotation.y", curve);
+        curve = new AnimationCurve(key_headRotation_Z);
+        clip.SetCurve("Head Target Parent", typeof(Transform), "rotation.z", curve);
+        curve = new AnimationCurve(key_headRotation_W);
+        clip.SetCurve("Head Target Parent", typeof(Transform), "rotation.w", curve);
 
         curve = new AnimationCurve(key_leftHandPosition_X);
         clip.SetCurve("Left Arm Target Parent", typeof(Transform), "localPosition.x", curve);
@@ -277,14 +383,21 @@ public class AnimationConverter : EditorWindow
         curve = new AnimationCurve(key_leftHandPosition_Z);
         clip.SetCurve("Left Arm Target Parent", typeof(Transform), "localPosition.z", curve);
 
-        //curve = new AnimationCurve(key_rightHandPosition_X);
-        //clip.SetCurve("Right Arm Target Parent", typeof(Transform), "localPosition.x", curve);
-        //curve = new AnimationCurve(key_rightHandPosition_Y);
-        //clip.SetCurve("Right Arm Target Parent", typeof(Transform), "localPosition.y", curve);
-        //curve = new AnimationCurve(key_rightHandPosition_Z);
-        //clip.SetCurve("Right Arm Target Parent", typeof(Transform), "localPosition.z", curve);
+        curve = new AnimationCurve(key_rightHandPosition_X);
+        clip.SetCurve("Right Arm Target Parent", typeof(Transform), "localPosition.x", curve);
+        curve = new AnimationCurve(key_rightHandPosition_Y);
+        clip.SetCurve("Right Arm Target Parent", typeof(Transform), "localPosition.y", curve);
+        curve = new AnimationCurve(key_rightHandPosition_Z);
+        clip.SetCurve("Right Arm Target Parent", typeof(Transform), "localPosition.z", curve);
 
-
+        headPosition.Clear();
+        headRotation.Clear();
+        leftArmPosition.Clear();
+        leftArmRotation.Clear();
+        rightArmPosition.Clear();
+        rightArmRotation.Clear();
+        pelvisPosition.Clear();
+        pelvisRotation.Clear();
 
 #if UNITY_EDITOR
         AssetDatabase.CreateAsset(clip, "Assets/Clips/" + animationName + ".anim");
