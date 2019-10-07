@@ -16,6 +16,7 @@ public class AnimationConverter : EditorWindow
 
     private List<Vector3> headPosition;
     private List<Quaternion> headRotation;
+    //private List<Vector3> headRotation;
     private List<Vector3> leftElbowPosition;
     private List<Quaternion> leftElbowRotation;
     private List<Vector3> leftArmPosition;
@@ -74,18 +75,24 @@ public class AnimationConverter : EditorWindow
         Debug.Log(textAsset.name);
         XmlNodeList xmlHeadPosition = xmlDoc.GetElementsByTagName("Headposition");
         XmlNodeList xmlHeadRotation = xmlDoc.GetElementsByTagName("Headrotation");
+        XmlNodeList xmlLeftElbowPosition = xmlDoc.GetElementsByTagName("Elbowposition_Left");
+        XmlNodeList xmlLeftElbowROtation = xmlDoc.GetElementsByTagName("Elbowrotation_Left");
         XmlNodeList xmlLeftArmPosition = xmlDoc.GetElementsByTagName("Handposition_Left");
         XmlNodeList xmlLeftArmRotation = xmlDoc.GetElementsByTagName("Handrotation_Left");
+        XmlNodeList xmlRightElbowPosition = xmlDoc.GetElementsByTagName("Elbowposition_Right");
+        XmlNodeList xmlRightElbowRotation = xmlDoc.GetElementsByTagName("ElbowRotation_Right");
         XmlNodeList xmlRightArmPosition = xmlDoc.GetElementsByTagName("Handposition_Right");
         XmlNodeList xmlRightArmRotation = xmlDoc.GetElementsByTagName("Handrotation_Right");
         XmlNodeList xmlPelvisPosition = xmlDoc.GetElementsByTagName("Pelvisposition");
         XmlNodeList xmlPelvisRotation = xmlDoc.GetElementsByTagName("Pelvisrotation");
-
-        Debug.Log(xmlHeadPosition.Count);
-        Debug.Log(xmlLeftArmPosition.Count);
-
-        Debug.Log(headPosition.Count);
-        Debug.Log(leftArmPosition.Count);
+        XmlNodeList xmlLeftKneePosition = xmlDoc.GetElementsByTagName("Kneeposition_Left");
+        XmlNodeList xmlLeftKneeRotation = xmlDoc.GetElementsByTagName("Kneerotation_Left");
+        XmlNodeList xmlLeftLegPosition = xmlDoc.GetElementsByTagName("Footposition_Left");
+        XmlNodeList xmlLeftLegRotation = xmlDoc.GetElementsByTagName("Footrotation_Left");
+        XmlNodeList xmlRightKneePosition = xmlDoc.GetElementsByTagName("Kneeposition_Right");
+        XmlNodeList xmlRightKneeRotation = xmlDoc.GetElementsByTagName("Kneerotation_Right");
+        XmlNodeList xmlRightLegPosition = xmlDoc.GetElementsByTagName("Footposition_Right");
+        XmlNodeList xmlRightLegRotation = xmlDoc.GetElementsByTagName("Footrotation_Right");
 
         foreach (XmlNode positionInfo in xmlHeadPosition)
         {
@@ -115,6 +122,7 @@ public class AnimationConverter : EditorWindow
         foreach (XmlNode rotationInfo in xmlHeadRotation)
         {
             Quaternion rotation = new Quaternion();
+            //Vector3 euler = new Vector3();
             XmlNodeList rotationDetails = rotationInfo.ChildNodes;
 
             foreach (XmlNode detail in rotationDetails)
@@ -141,6 +149,8 @@ public class AnimationConverter : EditorWindow
             }
             headRotation.Add(rotation);
         }
+
+        //TODO LEFT ELBOW
 
         foreach (XmlNode positionInfo in xmlLeftArmPosition)
         {
@@ -196,6 +206,8 @@ public class AnimationConverter : EditorWindow
             }
             leftArmRotation.Add(rotation);
         }
+
+        //TODO RIGHT ELBOW
 
         foreach (XmlNode positionInfo in xmlRightArmPosition)
         {
@@ -306,6 +318,120 @@ public class AnimationConverter : EditorWindow
             }
             pelvisRotation.Add(rotation);
         }
+
+        //TODO LEFT KNEE
+
+        foreach (XmlNode positionInfo in xmlLeftLegPosition)
+        {
+            Vector3 position = new Vector3();
+            XmlNodeList positionDetails = positionInfo.ChildNodes;
+
+            foreach (XmlNode detail in positionDetails)
+            {
+                if (detail.Name == "X")
+                {
+                    float.TryParse(detail.InnerText, NumberStyles.Float, CultureInfo.InvariantCulture, out position.x);
+                }
+
+                if (detail.Name == "Y")
+                {
+                    float.TryParse(detail.InnerText, NumberStyles.Float, CultureInfo.InvariantCulture, out position.y);
+                }
+
+                if (detail.Name == "Z")
+                {
+                    float.TryParse(detail.InnerText, NumberStyles.Float, CultureInfo.InvariantCulture, out position.z);
+                }
+            }
+            leftLegPosition.Add(position);
+        }
+
+        foreach (XmlNode rotationInfo in xmlLeftLegRotation)
+        {
+            Quaternion rotation = new Quaternion();
+            XmlNodeList rotationDetails = rotationInfo.ChildNodes;
+
+            foreach (XmlNode detail in rotationDetails)
+            {
+                if (detail.Name == "X")
+                {
+                    float.TryParse(detail.InnerText, NumberStyles.Float, CultureInfo.InvariantCulture, out rotation.x);
+                }
+
+                if (detail.Name == "Y")
+                {
+                    float.TryParse(detail.InnerText, NumberStyles.Float, CultureInfo.InvariantCulture, out rotation.y);
+                }
+
+                if (detail.Name == "Z")
+                {
+                    float.TryParse(detail.InnerText, NumberStyles.Float, CultureInfo.InvariantCulture, out rotation.z);
+                }
+
+                if (detail.Name == "W")
+                {
+                    float.TryParse(detail.InnerText, NumberStyles.Float, CultureInfo.InvariantCulture, out rotation.w);
+                }
+            }
+            leftLegRotation.Add(rotation);
+        }
+
+        //TODO RIGHT KNEE
+
+        foreach (XmlNode positionInfo in xmlRightLegPosition)
+        {
+            Vector3 position = new Vector3();
+            XmlNodeList positionDetails = positionInfo.ChildNodes;
+
+            foreach (XmlNode detail in positionDetails)
+            {
+                if (detail.Name == "X")
+                {
+                    float.TryParse(detail.InnerText, NumberStyles.Float, CultureInfo.InvariantCulture, out position.x);
+                }
+
+                if (detail.Name == "Y")
+                {
+                    float.TryParse(detail.InnerText, NumberStyles.Float, CultureInfo.InvariantCulture, out position.y);
+                }
+
+                if (detail.Name == "Z")
+                {
+                    float.TryParse(detail.InnerText, NumberStyles.Float, CultureInfo.InvariantCulture, out position.z);
+                }
+            }
+            rightLegPosition.Add(position);
+        }
+
+        foreach (XmlNode rotationInfo in xmlRightLegRotation)
+        {
+            Quaternion rotation = new Quaternion();
+            XmlNodeList rotationDetails = rotationInfo.ChildNodes;
+
+            foreach (XmlNode detail in rotationDetails)
+            {
+                if (detail.Name == "X")
+                {
+                    float.TryParse(detail.InnerText, NumberStyles.Float, CultureInfo.InvariantCulture, out rotation.x);
+                }
+
+                if (detail.Name == "Y")
+                {
+                    float.TryParse(detail.InnerText, NumberStyles.Float, CultureInfo.InvariantCulture, out rotation.y);
+                }
+
+                if (detail.Name == "Z")
+                {
+                    float.TryParse(detail.InnerText, NumberStyles.Float, CultureInfo.InvariantCulture, out rotation.z);
+                }
+
+                if (detail.Name == "W")
+                {
+                    float.TryParse(detail.InnerText, NumberStyles.Float, CultureInfo.InvariantCulture, out rotation.w);
+                }
+            }
+            rightLegRotation.Add(rotation);
+        }
     }
 
     void ConvertData()
@@ -328,13 +454,59 @@ public class AnimationConverter : EditorWindow
         Keyframe[] key_headRotation_Z = new Keyframe[headPosition.Count];
         Keyframe[] key_headRotation_W = new Keyframe[headPosition.Count];
 
+        //TODO LEFT ELBOW
+
         Keyframe[] key_leftHandPosition_X = new Keyframe[headPosition.Count];
         Keyframe[] key_leftHandPosition_Y = new Keyframe[headPosition.Count];
         Keyframe[] key_leftHandPosition_Z = new Keyframe[headPosition.Count];
 
+        Keyframe[] key_leftHandRotation_X = new Keyframe[headPosition.Count];
+        Keyframe[] key_leftHandRotation_Y = new Keyframe[headPosition.Count];
+        Keyframe[] key_leftHandRotation_Z = new Keyframe[headPosition.Count];
+        Keyframe[] key_leftHandRotation_W = new Keyframe[headPosition.Count];
+
+        //TODO RIGHT ELBOW
+
         Keyframe[] key_rightHandPosition_X = new Keyframe[headPosition.Count];
         Keyframe[] key_rightHandPosition_Y = new Keyframe[headPosition.Count];
         Keyframe[] key_rightHandPosition_Z = new Keyframe[headPosition.Count];
+
+        Keyframe[] key_rightHandRotation_X = new Keyframe[headPosition.Count];
+        Keyframe[] key_rightHandRotation_Y = new Keyframe[headPosition.Count];
+        Keyframe[] key_rightHandRotation_Z = new Keyframe[headPosition.Count];
+        Keyframe[] key_rightHandRotation_W = new Keyframe[headPosition.Count];
+
+        Keyframe[] key_pelvisPosition_X = new Keyframe[headPosition.Count];
+        Keyframe[] key_pelvisPosition_Y = new Keyframe[headPosition.Count];
+        Keyframe[] key_pelvisPosition_Z = new Keyframe[headPosition.Count];
+
+        Keyframe[] key_pelvisRotation_X = new Keyframe[headPosition.Count];
+        Keyframe[] key_pelvisRotation_Y = new Keyframe[headPosition.Count];
+        Keyframe[] key_pelvisRotation_Z = new Keyframe[headPosition.Count];
+        Keyframe[] key_pelvisRotation_W = new Keyframe[headPosition.Count];
+
+        //TODO LEFT KNEE
+
+        Keyframe[] key_leftLegPosition_X = new Keyframe[headPosition.Count];
+        Keyframe[] key_leftLegPosition_Y = new Keyframe[headPosition.Count];
+        Keyframe[] key_leftLegPosition_Z = new Keyframe[headPosition.Count];
+
+        Keyframe[] key_leftLegRotation_X = new Keyframe[headPosition.Count];
+        Keyframe[] key_leftLegRotation_Y = new Keyframe[headPosition.Count];
+        Keyframe[] key_leftLegRotation_Z = new Keyframe[headPosition.Count];
+        Keyframe[] key_leftLegRotation_W = new Keyframe[headPosition.Count];
+
+        //TODO RIGHT KNEE
+
+        Keyframe[] key_rightLegPosition_X = new Keyframe[headPosition.Count];
+        Keyframe[] key_rightLegPosition_Y = new Keyframe[headPosition.Count];
+        Keyframe[] key_rightLegPosition_Z = new Keyframe[headPosition.Count];
+
+        Keyframe[] key_rightLegRotation_X = new Keyframe[headPosition.Count];
+        Keyframe[] key_rightLegRotation_Y = new Keyframe[headPosition.Count];
+        Keyframe[] key_rightLegRotation_Z = new Keyframe[headPosition.Count];
+        Keyframe[] key_rightLegRotation_W = new Keyframe[headPosition.Count];
+
 
 
         for (int i = 0; i < key_headPosition_X.Length; i++)
@@ -348,14 +520,56 @@ public class AnimationConverter : EditorWindow
             key_headRotation_Z[i] = new Keyframe(timeline, headRotation[i].z);
             key_headRotation_W[i] = new Keyframe(timeline, headRotation[i].w);
 
+            //TODO LEFT ELBOW
+
             key_leftHandPosition_X[i] = new Keyframe(timeline, leftArmPosition[i].x);
             key_leftHandPosition_Y[i] = new Keyframe(timeline, leftArmPosition[i].y);
             key_leftHandPosition_Z[i] = new Keyframe(timeline, leftArmPosition[i].z);
+
+            key_leftHandRotation_X[i] = new Keyframe(timeline, leftArmRotation[i].x);
+            key_leftHandRotation_Y[i] = new Keyframe(timeline, leftArmRotation[i].y);
+            key_leftHandRotation_Z[i] = new Keyframe(timeline, leftArmRotation[i].z);
+            key_leftHandRotation_W[i] = new Keyframe(timeline, leftArmRotation[i].w);
+
+            //TODO RIGHT ELBOW
 
             key_rightHandPosition_X[i] = new Keyframe(timeline, rightArmPosition[i].x);
             key_rightHandPosition_Y[i] = new Keyframe(timeline, rightArmPosition[i].y);
             key_rightHandPosition_Z[i] = new Keyframe(timeline, rightArmPosition[i].z);
 
+            key_rightHandRotation_X[i] = new Keyframe(timeline, rightArmRotation[i].x);
+            key_rightHandRotation_Y[i] = new Keyframe(timeline, rightArmRotation[i].y);
+            key_rightHandRotation_Z[i] = new Keyframe(timeline, rightArmRotation[i].z);
+            key_rightHandRotation_W[i] = new Keyframe(timeline, rightArmRotation[i].w);
+
+            //TODO PELVIS, ALL LEGS!!
+
+            key_pelvisPosition_X[i] = new Keyframe(timeline, pelvisPosition[i].x);
+            key_pelvisPosition_Y[i] = new Keyframe(timeline, pelvisPosition[i].y);
+            key_pelvisPosition_Z[i] = new Keyframe(timeline, pelvisPosition[i].z);
+
+            key_pelvisRotation_X[i] = new Keyframe(timeline, pelvisRotation[i].x);
+            key_pelvisRotation_Y[i] = new Keyframe(timeline, pelvisRotation[i].y);
+            key_pelvisRotation_Z[i] = new Keyframe(timeline, pelvisRotation[i].z);
+            key_pelvisRotation_W[i] = new Keyframe(timeline, pelvisRotation[i].w);
+
+            key_leftLegPosition_X[i] = new Keyframe(timeline, leftLegPosition[i].x);
+            key_leftLegPosition_Y[i] = new Keyframe(timeline, leftLegPosition[i].y);
+            key_leftLegPosition_Z[i] = new Keyframe(timeline, leftLegPosition[i].z);
+
+            key_leftLegRotation_X[i] = new Keyframe(timeline, leftLegRotation[i].x);
+            key_leftLegRotation_Y[i] = new Keyframe(timeline, leftLegRotation[i].y);
+            key_leftLegRotation_Z[i] = new Keyframe(timeline, leftLegRotation[i].z);
+            key_leftLegRotation_W[i] = new Keyframe(timeline, leftLegRotation[i].w);
+
+            key_rightLegPosition_X[i] = new Keyframe(timeline, rightLegPosition[i].x);
+            key_rightLegPosition_Y[i] = new Keyframe(timeline, rightLegPosition[i].y);
+            key_rightLegPosition_Z[i] = new Keyframe(timeline, rightLegPosition[i].z);
+
+            key_rightLegRotation_X[i] = new Keyframe(timeline, rightLegRotation[i].x);
+            key_rightLegRotation_Y[i] = new Keyframe(timeline, rightLegRotation[i].y);
+            key_rightLegRotation_Z[i] = new Keyframe(timeline, rightLegRotation[i].z);
+            key_rightLegRotation_W[i] = new Keyframe(timeline, rightLegRotation[i].w);
 
             timeline += 0.1f;
         }
@@ -368,13 +582,13 @@ public class AnimationConverter : EditorWindow
         clip.SetCurve("Head Target Parent", typeof(Transform), "localPosition.z", curve);
 
         curve = new AnimationCurve(key_headRotation_X);
-        clip.SetCurve("Head Target Parent", typeof(Transform), "rotation.x", curve);
+        clip.SetCurve("Head Target Parent", typeof(Transform), "localRotation.x", curve);
         curve = new AnimationCurve(key_headRotation_Y);
-        clip.SetCurve("Head Target Parent", typeof(Transform), "rotation.y", curve);
+        clip.SetCurve("Head Target Parent", typeof(Transform), "localRotation.y", curve);
         curve = new AnimationCurve(key_headRotation_Z);
-        clip.SetCurve("Head Target Parent", typeof(Transform), "rotation.z", curve);
+        clip.SetCurve("Head Target Parent", typeof(Transform), "localRotation.z", curve);
         curve = new AnimationCurve(key_headRotation_W);
-        clip.SetCurve("Head Target Parent", typeof(Transform), "rotation.w", curve);
+        clip.SetCurve("Head Target Parent", typeof(Transform), "localRotation.w", curve);
 
         curve = new AnimationCurve(key_leftHandPosition_X);
         clip.SetCurve("Left Arm Target Parent", typeof(Transform), "localPosition.x", curve);
@@ -383,12 +597,46 @@ public class AnimationConverter : EditorWindow
         curve = new AnimationCurve(key_leftHandPosition_Z);
         clip.SetCurve("Left Arm Target Parent", typeof(Transform), "localPosition.z", curve);
 
+        curve = new AnimationCurve(key_leftHandRotation_X);
+        clip.SetCurve("Left Arm Target Parent", typeof(Transform), "localRotation.x", curve);
+        curve = new AnimationCurve(key_leftHandRotation_Y);
+        clip.SetCurve("Left Arm Target Parent", typeof(Transform), "localRotation.y", curve);
+        curve = new AnimationCurve(key_leftHandRotation_Z);
+        clip.SetCurve("Left Arm Target Parent", typeof(Transform), "localRotation.z", curve);
+        curve = new AnimationCurve(key_leftHandRotation_W);
+        clip.SetCurve("Left Arm Target Parent", typeof(Transform), "localRotation.w", curve);
+
         curve = new AnimationCurve(key_rightHandPosition_X);
         clip.SetCurve("Right Arm Target Parent", typeof(Transform), "localPosition.x", curve);
         curve = new AnimationCurve(key_rightHandPosition_Y);
         clip.SetCurve("Right Arm Target Parent", typeof(Transform), "localPosition.y", curve);
         curve = new AnimationCurve(key_rightHandPosition_Z);
         clip.SetCurve("Right Arm Target Parent", typeof(Transform), "localPosition.z", curve);
+
+        curve = new AnimationCurve(key_rightHandRotation_X);
+        clip.SetCurve("Right Arm Target Parent", typeof(Transform), "localRotation.x", curve);
+        curve = new AnimationCurve(key_rightHandRotation_Y);
+        clip.SetCurve("Right Arm Target Parent", typeof(Transform), "localRotation.y", curve);
+        curve = new AnimationCurve(key_rightHandRotation_Z);
+        clip.SetCurve("Right Arm Target Parent", typeof(Transform), "localRotation.z", curve);
+        curve = new AnimationCurve(key_rightHandRotation_W);
+        clip.SetCurve("Right Arm Target Parent", typeof(Transform), "localRotation.w", curve);
+
+        curve = new AnimationCurve(key_pelvisPosition_X);
+        clip.SetCurve("Hip Target Parent", typeof(Transform), "localPosition.x", curve);
+        curve = new AnimationCurve(key_pelvisPosition_Y);
+        clip.SetCurve("Hip Target Parent", typeof(Transform), "localPosition.y", curve);
+        curve = new AnimationCurve(key_pelvisPosition_Z);
+        clip.SetCurve("Hip Target Parent", typeof(Transform), "localPosition.z", curve);
+
+        curve = new AnimationCurve(key_pelvisRotation_X);
+        clip.SetCurve("Hip Target Parent", typeof(Transform), "localRotation.x", curve);
+        curve = new AnimationCurve(key_pelvisRotation_Y);
+        clip.SetCurve("Hip Target Parent", typeof(Transform), "localRotation.y", curve);
+        curve = new AnimationCurve(key_pelvisRotation_Z);
+        clip.SetCurve("Hip Target Parent", typeof(Transform), "localRotation.z", curve);
+        curve = new AnimationCurve(key_pelvisRotation_W);
+        clip.SetCurve("Hip Target Parent", typeof(Transform), "localRotation.w", curve);
 
         headPosition.Clear();
         headRotation.Clear();
@@ -398,6 +646,10 @@ public class AnimationConverter : EditorWindow
         rightArmRotation.Clear();
         pelvisPosition.Clear();
         pelvisRotation.Clear();
+        leftLegPosition.Clear();
+        leftLegRotation.Clear();
+        rightLegPosition.Clear();
+        rightLegRotation.Clear();
 
 #if UNITY_EDITOR
         AssetDatabase.CreateAsset(clip, "Assets/Clips/" + animationName + ".anim");

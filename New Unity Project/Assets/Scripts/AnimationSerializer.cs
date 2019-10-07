@@ -70,6 +70,7 @@ public class AnimationSerializer : MonoBehaviour
         WorkoutAnimationNode node = new WorkoutAnimationNode()
         {
             headposition = new SerializableVector3(head.localPosition.x, head.localPosition.y, head.localPosition.z),
+            //headrotation = new SerializableVector3(head.rotation.eulerAngles.x, head.rotation.eulerAngles.y, head.rotation.eulerAngles.z),
             headrotation = new SerializableQuaternion(head.localRotation.x, head.localRotation.y, head.localRotation.z, head.localRotation.w),
             elbowposition_l = new SerializableVector3(elbow_l.localPosition.x, elbow_l.localPosition.y, elbow_l.localPosition.z),
             elbowrotation_l = new SerializableQuaternion(elbow_l.localRotation.x, elbow_l.localRotation.y, elbow_l.localRotation.z, elbow_l.localRotation.w),
@@ -150,6 +151,7 @@ public class WorkoutAnimationNode
 
     [XmlElement("Headrotation")]
     public SerializableQuaternion headrotation { get; set; }
+    //public SerializableVector3 headrotation { get; set; }
 
     [XmlElement("Elbowposition_Left")]
     public SerializableVector3 elbowposition_l { get; set; }
