@@ -4,19 +4,18 @@ using System.Xml.Serialization;
 using System;
 using System.Collections.Generic;
 using System.Xml;
+using UnityEditor;
 
 [XmlRoot("Workout Animation")]
 public class AnimationSerializer : MonoBehaviour
 {
-    private static readonly string animationDirectoryName = "AnimationRecordings";
     private static readonly string animationFileName = "Animation.xml";
-    private static readonly string directoryPath = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
-    public static readonly string animationRelativeFilePath = Path.Combine(animationDirectoryName, animationFileName);
-    public static readonly string animationDirectoryPath = Path.Combine(directoryPath, animationDirectoryName);
-    public static readonly string animationFilePath = Path.Combine(directoryPath, animationRelativeFilePath);
 
     public bool isRecording = false;
 
+    /// <summary>
+    /// Reference to every tracked gameobject.
+    /// </summary>
     public Transform head;
     public Transform elbow_l;
     public Transform hand_l;
@@ -51,7 +50,6 @@ public class AnimationSerializer : MonoBehaviour
             isRecording = false;
             PrepareSerializedData();
             nodeList.Clear();
-            CheckForPath();
             SerializeWorkoutAnimation();
             Debug.Log("Finished Serializing Movement Parameters.");
 
@@ -65,12 +63,14 @@ public class AnimationSerializer : MonoBehaviour
         WriteNode();
     }
 
+    /// <summary>
+    /// Add every relevant Transform to the nodelist.
+    /// </summary>
     public void WriteNode()
     {
         WorkoutAnimationNode node = new WorkoutAnimationNode()
         {
             headposition = new SerializableVector3(head.localPosition.x, head.localPosition.y, head.localPosition.z),
-            //headrotation = new SerializableVector3(head.rotation.eulerAngles.x, head.rotation.eulerAngles.y, head.rotation.eulerAngles.z),
             headrotation = new SerializableQuaternion(head.localRotation.x, head.localRotation.y, head.localRotation.z, head.localRotation.w),
             elbowposition_l = new SerializableVector3(elbow_l.localPosition.x, elbow_l.localPosition.y, elbow_l.localPosition.z),
             elbowrotation_l = new SerializableQuaternion(elbow_l.localRotation.x, elbow_l.localRotation.y, elbow_l.localRotation.z, elbow_l.localRotation.w),
@@ -105,30 +105,18 @@ public class AnimationSerializer : MonoBehaviour
         }
     }
 
-    public void CheckForPath()
-    {
-        if (!Directory.Exists(animationDirectoryPath))
-        {
-            Directory.CreateDirectory(animationDirectoryPath);
-            File.Create(animationFilePath).Dispose();
-        }
-
-        else if (!File.Exists(animationFilePath))
-        {
-            Debug.Log(animationFilePath);
-            File.Create(animationFilePath).Dispose();
-        }
-
-        //TODO Make sure animationFilePath doesnt make any problems
-    }
-
+    /// <summary>
+    /// Finalize XML and save Animation.xml to assets
+    /// </summary>
     public void SerializeWorkoutAnimation()
     {
         var serializer = new XmlSerializer(typeof(WorkoutAnimation));
-        using (var writer = XmlWriter.Create(animationFilePath))
+        using (var writer = XmlWriter.Create("Assets/" + animationFileName))
         {
             serializer.Serialize(writer, workout);
         }
+        AssetDatabase.SaveAssets();
+        AssetDatabase.Refresh();
     }
 
 }
@@ -151,7 +139,6 @@ public class WorkoutAnimationNode
 
     [XmlElement("Headrotation")]
     public SerializableQuaternion headrotation { get; set; }
-    //public SerializableVector3 headrotation { get; set; }
 
     [XmlElement("Elbowposition_Left")]
     public SerializableVector3 elbowposition_l { get; set; }

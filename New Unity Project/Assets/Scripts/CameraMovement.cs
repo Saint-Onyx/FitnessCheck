@@ -8,16 +8,19 @@ public class CameraMovement : MonoBehaviour
     private float maxZoom = 60f;
     private float currentZoom;
     private float sensitivity = 50f;
-    // Update is called once per frame
+    
+    /// <summary>
+    /// Enables camera movement. Independent from Time.deltaTime to allow rotation while paused
+    /// </summary>
     void Update()
     {
         if (Input.GetKey("left"))
         {
-            transform.Rotate(0, 100 * Time.deltaTime, 0);
+            transform.Rotate(0, 100 * 0.02f, 0);
         }
         if (Input.GetKey("right"))
         {
-            transform.Rotate(0, -100 * Time.deltaTime, 0);
+            transform.Rotate(0, -100 * 0.02f, 0);
         }
 
         currentZoom = Camera.main.fieldOfView;

@@ -250,7 +250,7 @@ namespace Valve.VR
             Camera.onPreCull += OnCameraPreCull;
 #endif
             var types = new EVRScreenshotType[] { EVRScreenshotType.StereoPanorama };
-            OpenVR.Screenshots.HookScreenshot(types);
+            //OpenVR.Screenshots.HookScreenshot(types);
         }
 
         void OnDisable()
